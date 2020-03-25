@@ -1,13 +1,16 @@
 package com.flight.reservation.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Reservation extends AbstractEntity {
 
     private Boolean checkedIn;
     private int numberOfBags;
+    @OneToOne
     private Passenger passenger;
+    @OneToOne
     private Flight flight;
 
     public Boolean getCheckedIn() {
