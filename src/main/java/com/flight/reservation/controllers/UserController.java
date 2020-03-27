@@ -33,7 +33,7 @@ public class UserController {
                         ModelMap modelMap) {
         User user = userRepo.findByEmail(email);
         if (user.getPassword().equals(password)) {
-            return "login/findFlights";
+            return "findFlights";
         } else {
             modelMap.addAttribute("msg", "Invalid username or password. Please try again!");
         }
