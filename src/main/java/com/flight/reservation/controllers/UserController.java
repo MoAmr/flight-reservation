@@ -16,6 +16,16 @@ public class UserController {
     @Autowired
     private UserRepository userRepo;
 
+//    @RequestMapping(value = {"", "/"})
+//    public String showHomePage() {
+//        return "index";
+//    }
+
+    @RequestMapping("/showLogin")
+    public String showLoginPage() {
+        return "login/login";
+    }
+
     @RequestMapping("/showReg")
     public String showRegistrationPage() {
         return "login/registerUser";
