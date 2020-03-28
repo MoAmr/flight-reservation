@@ -27,16 +27,19 @@ public class UserController {
 
     @RequestMapping("/showLogin")
     public String showLoginPage() {
+        LOGGER.info("Inside showLoginPage()");
         return "login/login";
     }
 
     @RequestMapping("/showReg")
     public String showRegistrationPage() {
+        LOGGER.info("Inside showRegistrationPage()");
         return "login/registerUser";
     }
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public String register(@ModelAttribute("user") User user) {
+        LOGGER.info("Inside register() " + user);
         userRepo.save(user);
         return "login/login";
     }
@@ -45,11 +48,7 @@ public class UserController {
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
                         ModelMap modelMap) {
-        LOGGER.error("ERROR");
-        LOGGER.warn("WARN");
-        LOGGER.info("INFO");
-        LOGGER.debug("DEBUG");
-        LOGGER.trace("TRACE");
+        LOGGER.info("Inside login() and the email is: " + email);
         User user = userRepo.findByEmail(email);
         if (user.getPassword().equals(password)) {
             return "findFlights";
