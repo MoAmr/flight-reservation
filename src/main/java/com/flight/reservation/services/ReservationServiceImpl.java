@@ -1,6 +1,5 @@
 package com.flight.reservation.services;
 
-import com.flight.reservation.controllers.ReservationController;
 import com.flight.reservation.dto.ReservationRequest;
 import com.flight.reservation.entities.Flight;
 import com.flight.reservation.entities.Passenger;

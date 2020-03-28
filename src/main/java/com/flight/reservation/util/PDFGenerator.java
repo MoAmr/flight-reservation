@@ -7,6 +7,8 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -15,7 +17,11 @@ import java.io.FileOutputStream;
 @Component
 public class PDFGenerator {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PDFGenerator.class);
+
     public void generateItinerary(Reservation reservation, String filePath) {
+
+        LOGGER.info("Inside generateItinerary()");
 
         Document document = new Document();
 
@@ -25,7 +31,7 @@ public class PDFGenerator {
             document.add(generateTable(reservation));
             document.close();
         } catch (FileNotFoundException | DocumentException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in generateItinerary() " + e);
         }
     }
 
