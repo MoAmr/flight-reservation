@@ -1,4 +1,4 @@
-package util;
+package com.flight.reservation.util;
 
 import com.flight.reservation.entities.Reservation;
 import com.itextpdf.text.Document;
