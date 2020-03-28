@@ -1,5 +1,6 @@
 package com.flight.reservation.services;
 
+import com.flight.reservation.controllers.ReservationController;
 import com.flight.reservation.dto.ReservationRequest;
 import com.flight.reservation.entities.Flight;
 import com.flight.reservation.entities.Passenger;
@@ -9,6 +10,8 @@ import com.flight.reservation.repos.PassengerRepository;
 import com.flight.reservation.repos.ReservationRepository;
 import com.flight.reservation.util.EmailUtil;
 import com.flight.reservation.util.PDFGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +35,17 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private EmailUtil emailUtil;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
+
     @Override
     public Reservation bookFlight(ReservationRequest request) {
+
+        LOGGER.info("Inside bookFlight()");
 
         //Make Payment
 
         Long flightId = request.getFlightId();
+        LOGGER.info("Fetching the flight for flight id: " + flightId);
         Optional<Flight> flight = flightRepo.findById(flightId);
 
         Passenger passenger = new Passenger();
@@ -46,6 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
         passenger.setEmail(request.getPassengerEmail());
         passenger.setPhone(request.getPassengerPhone());
 
+        LOGGER.info("Saving the passenger: " + passenger);
         Passenger savedPassenger = passengerRepo.save(passenger);
 
         Reservation reservation = new Reservation();
@@ -53,10 +62,13 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setPassenger(savedPassenger);
         reservation.setCheckedIn(false);
 
+        LOGGER.info("Saving the reservation: " + reservation);
         Reservation savedReservation = reservationRepo.save(reservation);
 
         String filePath = "/Users/mohammed/Documents/Reservations/reservation" + savedReservation.getId() + ".pdf";
+        LOGGER.info("Generating the Itinerary");
         pdfGenerator.generateItinerary(savedReservation, filePath);
+        LOGGER.info("Emailing the Itinerary");
         emailUtil.sendItinerary(passenger.getEmail(), filePath);
 
         return savedReservation;
