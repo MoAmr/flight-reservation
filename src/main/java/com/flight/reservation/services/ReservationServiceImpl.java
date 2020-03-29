@@ -36,6 +36,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
+    private static final String RESERVATIONS = "src/main/resources/reservations/";
+
     @Override
     public Reservation bookFlight(ReservationRequest request) {
 
@@ -64,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
         LOGGER.info("Saving the reservation: " + reservation);
         Reservation savedReservation = reservationRepo.save(reservation);
 
-        String filePath = "/Users/mohammed/Documents/Reservations/reservation" + savedReservation.getId() + ".pdf";
+        String filePath = RESERVATIONS + "reservation" + savedReservation.getId() + ".pdf";
         LOGGER.info("Generating the Itinerary");
         pdfGenerator.generateItinerary(savedReservation, filePath);
         LOGGER.info("Emailing the Itinerary");
