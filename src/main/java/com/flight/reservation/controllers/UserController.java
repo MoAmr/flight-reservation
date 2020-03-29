@@ -2,6 +2,7 @@ package com.flight.reservation.controllers;
 
 import com.flight.reservation.entities.User;
 import com.flight.reservation.repos.UserRepository;
+import com.flight.reservation.services.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private SecurityService securityService;
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -59,9 +63,9 @@ public class UserController {
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
                         ModelMap modelMap) {
+        Boolean loginResponse = securityService.login(email, password);
         LOGGER.info("Inside login() and the email is: " + email);
-        User user = userRepo.findByEmail(email);
-        if (user.getPassword().equals(password)) {
+        if (loginResponse) {
             return "findFlights";
         } else {
             modelMap.addAttribute("msg", "Invalid username or password. Please try again!");
